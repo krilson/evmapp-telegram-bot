@@ -1,6 +1,6 @@
 # Simple Telegram Notification Bot for Zen EON Forger Node Monitoring
 
-This project provides a simple Telegram bot designed to monitor your EVM-compatible blockchain node for new forged blocks. In addition to block monitoring, the bot keeps an eye on the node's wallet for any balance changes and sends notifications accordingly.
+This project provides a simple Telegram bot designed to monitor your Zen EON Forger Node for new forged blocks. In addition to block monitoring, the bot keeps an eye on the node's wallet for any balance changes and sends notifications accordingly.
 
 It is assumed your node was set up using: https://github.com/HorizenOfficial/compose-evm-simplified
 
@@ -25,7 +25,7 @@ SCNODE_LOG_FILE_LEVEL=off
 SCNODE_LOG_FILE_LEVEL=info
 ```
 
-3. Save the changes and redeploy the EVM-compatible blockchain app Docker container.
+3. Save the changes and redeploy the Zen EON Forger Node Docker container.
 
 ### Finding the Log File
 
