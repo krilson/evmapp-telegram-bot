@@ -1,0 +1,21 @@
+services:
+  evmapp-telegram-bot:
+    container_name: evmapp-telegram-bot
+    restart: unless-stopped
+    build: .
+    environment:
+      - TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN}
+      - TELEGRAM_CHAT_ID=${TELEGRAM_CHAT_ID}
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ${DEBUG_LOG_DIR}:/app/logs
+    networks:
+      - evmapp-mainnet-eon_inet
+
+networks:
+  evmapp-mainnet-eon_inet:
+    external: true
+    name: evmapp-mainnet-eon_inet
+
+
+
