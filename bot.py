@@ -61,20 +61,31 @@ async def balance_monitor():
         await check_balance_change()
         await asyncio.sleep(60)  # Wait for 1 minute
 
+# To detect when the log gets rotated
+async def get_inode(filepath):
+    """Get the inode number of the file."""
+    return os.stat(filepath).st_ino
+
 async def follow_logs(filepath, term):
-    """Follow the log file for new entries and send notifications for lines containing the term."""
+    """Follow the log file for new entries and send notifications for lines containing the term, handling log rotation."""
+    initial_inode = await get_inode(filepath)
     async with aiofiles.open(filepath, "r") as log_file:
-        # Move to the end of the file
-        await log_file.seek(0, os.SEEK_END)
-        
-        # Continuously check for new log entries
+        await log_file.seek(0, os.SEEK_END)  # Move to the end of the file
+
         while True:
+            current_inode = await get_inode(filepath)
+            if current_inode != initial_inode:
+                # Detected log rotation, reopen the file
+                await log_file.close()
+                log_file = await aiofiles.open(filepath, "r")
+                initial_inode = current_inode
+
             line = await log_file.readline()
             if line:
                 if term in line:
                     await send_notification(line.strip())
             else:
-                await asyncio.sleep(1)  # Wait for a second before checking for new log entries
+                await asyncio.sleep(1)  # Wait before checking for new log entries
 
 
 async def main():
